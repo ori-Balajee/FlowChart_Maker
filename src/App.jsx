@@ -48,6 +48,15 @@ const App = () => {
     setNodeText('');
   }, []);
 
+  const deleteNode = useCallback(() => {
+    setNodes((nds) => nds.filter((node) => node.id !== selectedNode?.id));
+    setEdges((eds) => eds.filter(
+      (edge) => edge.source !== selectedNode?.id && edge.target !== selectedNode?.id
+    ));
+    setSelectedNode(null);
+    setNodeText('');
+  }, [selectedNode, setNodes, setEdges]);
+
   const updateNodeText = (text) => {
     setNodeText(text);
     setNodes((nds) =>
@@ -136,11 +145,11 @@ const App = () => {
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200 p-4 flex flex-col gap-4 shadow-sm z-10">
         <h1 className="text-xl font-bold text-gray-800 mb-4">FlowMaster</h1>
-        
+
         <div className="space-y-4">
           <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Shapes</p>
-          
-          <div 
+
+          <div
             className="p-3 border-2 border-dashed border-gray-300 rounded-lg cursor-grab hover:border-blue-400 hover:bg-blue-50 transition-colors text-center"
             draggable
             onDragStart={(event) => {
@@ -149,8 +158,8 @@ const App = () => {
           >
             Process
           </div>
-          
-          <div 
+
+          <div
             className="p-3 border-2 border-dashed border-gray-300 rounded-lg cursor-grab hover:border-orange-400 hover:bg-orange-50 transition-colors text-center"
             draggable
             onDragStart={(event) => {
@@ -159,8 +168,8 @@ const App = () => {
           >
             Decision
           </div>
-          
-          <div 
+
+          <div
             className="p-3 border-2 border-dashed border-gray-300 rounded-lg cursor-grab hover:border-green-400 hover:bg-green-50 transition-colors text-center"
             draggable
             onDragStart={(event) => {
@@ -173,14 +182,14 @@ const App = () => {
 
         <div className="mt-8 space-y-2">
           <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Persistence</p>
-          <button 
+          <button
             onClick={saveFlow}
             disabled={isSaving}
             className={`w-full py-2 px-4 rounded text-white font-medium transition-colors ${isSaving ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'}`}
           >
             {isSaving ? 'Saving...' : 'Save Flow'}
           </button>
-          <button 
+          <button
             onClick={loadFlow}
             className="w-full py-2 px-4 rounded bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors"
           >
@@ -215,7 +224,7 @@ const App = () => {
           <Background color="#aaa" gap={18} />
           <Controls />
           <MiniMap />
-          
+
           <Panel position="top-right" className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 w-64">
             {selectedNode ? (
               <div className="flex flex-col gap-2">
@@ -226,16 +235,24 @@ const App = () => {
                   onChange={(e) => updateNodeText(e.target.value)}
                   autoFocus
                 />
-                <button 
+                <button
                   onClick={() => setSelectedNode(null)}
                   className="text-xs text-blue-500 text-right hover:underline mt-1"
                 >
                   Done
                 </button>
+
+                <button
+                  onClick={deleteNode}
+                  className="text-xs text-red-500 text-right hover:underline mt-1"
+                >
+                  Delete Node
+                </button>
               </div>
             ) : (
               <p className="text-sm text-gray-400 italic">Select a node to edit its text</p>
             )}
+
           </Panel>
         </ReactFlow>
       </div>
