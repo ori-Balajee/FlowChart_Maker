@@ -20,7 +20,7 @@ const nodeTypes = {
   startEnd: StartEndNode,
 };
 
-const API_URL = import.meta.env.VITE_API_URL1;
+const API_URL = import.meta.env.VITE_API_URL;
 
 const App = () => {
   const reactFlowWrapper = useRef(null);
@@ -75,7 +75,7 @@ const App = () => {
   const saveFlow = async () => {
     setIsSaving(true);
     try {
-      const response = await fetch(`${API_URL}/save`, {
+      const response = await fetch(`${API_URL}/api/flow/save`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nodes, edges }),
@@ -95,7 +95,7 @@ const App = () => {
 
   const loadFlow = async () => {
     try {
-      const response = await fetch(`${API_URL}/load`);
+      const response = await fetch(`${API_URL}/api/slow/load`);
       if (response.ok) {
         const data = await response.json();
         if (data.nodes && data.edges) {
