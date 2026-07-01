@@ -20,7 +20,7 @@ const nodeTypes = {
   startEnd: StartEndNode,
 };
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL1;
 
 const App = () => {
   const reactFlowWrapper = useRef(null);
